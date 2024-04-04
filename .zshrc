@@ -129,7 +129,7 @@ bindkey '5~' kill-word
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-eval "$(oh-my-posh init zsh --config ~/mytheme.omp.json)"
+eval "$(oh-my-posh init zsh --config ~/.mytheme.omp.json)"
 export LS_COLORS
 export PATH="$PATH:$HOME/miniconda3/bin"
 export PATH="$PATH:$HOME/petlikarayan/.local/bin"
