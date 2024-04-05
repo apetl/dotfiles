@@ -191,5 +191,5 @@ fpath+=~/.zfunc
 
 zshrc_end_time=$(date +%s%N)
 elapsed_time=$((($zshrc_end_time - $zshrc_start_time)/1000000))
-echo "Time taken to load .zshrc: ${elapsed_time} ms"
+echo "${elapsed_time}ms"
 unset zshrc_start_time zshrc_end_time elapsed_time
