@@ -1,3 +1,5 @@
+zshrc_start_time=$(date +%s%N)
+
 # Fig pre block. Keep at the top of this file.
 [[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 # If you come from bash you might have to change your $PATH.
@@ -129,10 +131,21 @@ bindkey '5~' kill-word
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
+source ~/.async.zsh
+async_init
+async_start_worker my_worker
+async_job_callback() {
+  local job=$1 ret_code=$2 output=$3
+  if [[ $job == "load_nvm" ]]; then
+    source $NVM_DIR/nvm.sh
+  elif [[ $job == "initialize_compinit" ]]; then
+    autoload -Uz compinit && compinit
+  fi
+}
+
 eval "$(oh-my-posh init zsh --config ~/.mytheme.omp.json)"
 export LS_COLORS
 export PATH="$PATH:$HOME/miniconda3/bin"
-export PATH="$PATH:$HOME/petlikarayan/.local/bin"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -151,7 +164,10 @@ unset __conda_setup
 
 LS_COLORS=$LS_COLORS:'ow=1;34:' ; export LS_COLORS
 
-source /usr/share/nvm/init-nvm.sh
+async_register_callback my_worker async_job_callback
+export NVM_DIR="$HOME/.nvm"
+async_job my_worker load_nvm
+
 #alias cat="bat"
 alias ls="exa"
 alias ll="exa -ll"
@@ -169,6 +185,11 @@ export FZF_DEFAULT_COMMAND='fd --type f'
 # Created by `pipx` on 2023-12-28 04:44:00
 export PATH="$PATH:/home/apetl/.local/bin"
 
-autoload -Uz compinit
+async_job my_worker initialize_compinit
 zstyle ':completion:*' menu select
 fpath+=~/.zfunc
+
+zshrc_end_time=$(date +%s%N)
+elapsed_time=$((($zshrc_end_time - $zshrc_start_time)/1000000))
+echo "Time taken to load .zshrc: ${elapsed_time} ms"
+unset zshrc_start_time zshrc_end_time elapsed_time
