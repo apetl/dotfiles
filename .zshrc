@@ -89,6 +89,10 @@ fpath+=~/.zfunc
 
 eval "$(starship init zsh)"
 
+source $(brew --prefix)/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
 zshrc_end_time=$(date +%s%N)
 elapsed_time=$((($zshrc_end_time - $zshrc_start_time)/1000000))
 echo "${elapsed_time}ms"
