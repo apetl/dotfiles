@@ -12,6 +12,7 @@ alias explorer='wslview'
 alias ipconfig='ifconfig'
 alias lg='lazygit'
 # alias oc ='oco'
+alias neofetch='fastfetch -c ~/.fastfetch-linux.jsonc'
 
 my-clear() {
   for i in {3..$(tput lines)}
@@ -66,8 +67,10 @@ export NVM_DIR="$HOME/.nvm"
 async_job my_worker load_nvm
 
 #alias cat="bat"
-alias ls="exa"
-alias ll="exa -ll"
+alias ls="eza --ignore-glob='NTUSER*|ntuser*'"
+alias ll="eza --ignore-glob='NTUSER*|ntuser*' --long -a"
+alias la="eza --ignore-glob='NTUSER*|ntuser*' -a"
+alias l="eza --ignore-glob='NTUSER*|ntuser*' --long --git"
 eval "$(zoxide init --cmd cd zsh)"
 
 autoload -Uz bracketed-paste-magic
