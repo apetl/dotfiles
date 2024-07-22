@@ -3,3 +3,52 @@
 /.config/gh/hosts.yml
 /.config/fabric
 /.config/JetBrains
+
+.opencommit
+
+# Ignore specific types of files
+*.log
+*.tmp
+*.swp
+*.bak
+*.swo
+
+# Ignore system-specific files
+.DS_Store
+.Thumbs.db
+.AppleDouble
+.LSOverride
+ehthumbs.db
+Desktop.ini
+.directory
+
+# Ignore backup files
+*~
+
+# Ignore environment variable files
+.env
+.env.local
+.env.* # This will ignore any file with a .env prefix, such as .env.development, .env.production, etc.
+
+# Ignore IDE and editor-specific files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore Python virtual environments
+venv/
+
+# Ignore node_modules directory for Node.js projects
+node_modules/
+
+# Ignore compiled Python files
+__pycache__/
+*.py[cod]
+
+# Ignore temporary files created by editors
+*.pid
+*.seed
+*.pid.lock
+*.lock
+
