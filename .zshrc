@@ -3,8 +3,8 @@ zshrc_start_time=$(date +%s%N)
 source /usr/share/zsh-antidote/antidote.zsh
 antidote load
 
+alias cat='bat'
 alias py='python'
-alias tpy='time python'
 alias deactivate='conda deactivate'
 alias activate='conda activate'
 alias prj='cd ~/Projects'
@@ -43,6 +43,10 @@ async_job_callback() {
   fi
 }
 
+async_job my_worker initialize_compinit
+zstyle ':completion:*' menu select
+fpath+=~/.zfunc
+
 export LS_COLORS
 export PATH="$PATH:$HOME/miniconda3/bin"
 
@@ -63,6 +67,17 @@ unset __conda_setup
 
 LS_COLORS=$LS_COLORS:'ow=1;34:' ; export LS_COLORS
 
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt INC_APPEND_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_EXPIRE_DUPS_FIRST
+
 async_register_callback my_worker async_job_callback
 export NVM_DIR="$HOME/.nvm"
 async_job my_worker load_nvm
@@ -79,23 +94,20 @@ zle -N bracketed-paste bracketed-paste-magic
 zstyle ':bracketed-paste-magic' active-widgets '.self-*'
 
 eval "$(fzf --zsh)"
-export FZF_DEFAULT_COMMAND='fd --type f'
-
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --follow --glob "!.git/*"'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 
 # Created by `pipx` on 2023-12-28 04:44:00
 export PATH="$PATH:/home/apetl/.local/bin"
 
-async_job my_worker initialize_compinit
-zstyle ':completion:*' menu select
-fpath+=~/.zfunc
-
 eval "$(starship init zsh)"
 
-source $(brew --prefix)/share/zsh-history-substring-search/zsh-history-substring-search.zsh
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
+#source $(brew --prefix)/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+#bindkey '^[[A' history-substring-search-up
+#bindkey '^[[B' history-substring-search-down
+
+if [ -f "/home/apetl/.config/fabric/fabric-bootstrap.inc" ]; then . "/home/apetl/.config/fabric/fabric-bootstrap.inc"; fi
 
 ff
 

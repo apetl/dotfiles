@@ -1,12 +1,20 @@
 lastupdatecheck: 0
 recentrepos:
-- /home/apetl/Projects/nano-link
-- /home/apetl/Projects/Rust/helloWorld
-- /home/apetl/Projects/Rust
-- /mnt/x/Projects/Rust
-- /mnt/c/Users/petli/Documents/Projects/Rust
+    - /home/apetl/Projects/rcipher
+    - /home/apetl/Projects/nano-link
+    - /home/apetl/Projects/Rust/helloWorld
+    - /home/apetl/Projects/Rust
+    - /mnt/x/Projects/Rust
+    - /mnt/c/Users/petli/Documents/Projects/Rust
 startuppopupversion: 5
+lastversion: 0.43.1
 customcommandshistory:
-- q
+    - q
 hidecommandlog: false
 ignorewhitespaceindiffview: false
+diffcontextsize: 3
+renamesimilaritythreshold: 50
+localbranchsortorder: recency
+remotebranchsortorder: alphabetical
+gitlogorder: topo-order
+gitlogshowgraph: always
