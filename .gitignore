@@ -3,8 +3,13 @@
 /.config/gh/hosts.yml
 /.config/fabric
 /.config/JetBrains
+.config/go
+.config/wslu
+.config/btop/btop.log
 
 .opencommit
+.sgptrc
+.bash_history
 
 # Ignore specific types of files
 *.log
