@@ -32,18 +32,22 @@ format = "[$path]($style)[$read_only]($read_only_style)"
 
 [git_branch]
 format = "|[$branch]($style)"
+truncation_length = 6
+truncation_symbol = "…"
 style = "peach"
 
 [git_status]
-format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218)($ahead_behind$stashed)]($style)"
-style = "peach"
-conflicted = ""
-untracked = ""
-modified = ""
-staged = ""
-renamed = ""
-deleted = ""
+conflicted = "="
+ahead = "⇡"
+behind = "⇣"
+diverged = "⇕"
+untracked = "?"
 stashed = "≡"
+modified = "!"
+staged = "[++($count)](green)"
+renamed = "»"
+deleted = "✘"
+format = "[$all_status]($style)"
 
 [git_state]
 format = '([$state( $progress_current/$progress_total)]($style))'

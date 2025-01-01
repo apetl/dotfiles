@@ -1,9 +1,55 @@
 [user]
-	email = ayan@apetl.com
-	name = ayan
+	email = git@apetl.dev
+	name = apetl
 [credential "https://github.com"]
 	helper = 
 	helper = !/usr/bin/gh auth git-credential
 [credential "https://gist.github.com"]
 	helper = 
-	helper = !/usr/bin/gh auth git-credential
+  helper = !/usr/bin/gh auth git-credential
+[init]
+  defaultBranch = master
+[alias]
+    # List aliases
+    la = !echo "la = list aliases" | grep --color=always -E '^[^=]*|$' && git config --get-regexp ^alias\\. | sed -e 's/^alias\\.//' -e 's/\\ /\\ =\\ /' | tail -n +2 | grep --color=always -E '^[^=]*|$'
+
+    # Status
+    s = status -s
+    sl = status
+
+    # Add
+    a = add
+    aa = add --all
+    ap = add -p
+
+    #Restore
+    rs = restore
+
+    # Stash
+    st = stash
+    stl = stash list
+    stc = stash clear
+    stp = stash pop
+    sta = stash apply
+
+    # Commit
+    c = commit
+    cm = commit -m
+    cam = commit --amend -m
+    ca = commit --amend --no-edit
+
+    # Switch
+    sw = switch
+    swc = switch -c
+
+    # Branch
+    b = branch --sort=-committerdate
+    ba = branch -a --sort=-committerdate
+
+    # Merge
+    m = merge
+
+    # Diff
+    d = diff
+    ds = diff --stat
+    dc = diff --cached

@@ -6,6 +6,8 @@
 .config/go
 .config/wslu
 .config/btop/btop.log
+.config/lazygit/state.yml
+.config/shell_gpt
 
 .opencommit
 .sgptrc
