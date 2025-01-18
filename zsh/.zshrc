@@ -141,7 +141,12 @@ export FZF_DEFAULT_OPTS=" \
 --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
 --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
 --color=selected-bg:#45475a \
---multi"
+--multi \
+--preview 'bat --color=always --style=numbers {} || cat {}' \
+--preview-window=right:60% \
+--preview-window=right:40% \
+--height=40%
+"
 
 export EDITOR='nvim'
 fr() {
@@ -178,7 +183,7 @@ export PATH="$PATH:$HOME/go/bin"
 
 # Custom command
 ff
-
+cd ~
 # End timing
 zshrc_end_time=$(date +%s%N)
 elapsed_time=$((($zshrc_end_time - $zshrc_start_time)/1000000))
