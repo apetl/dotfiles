@@ -1,70 +1,81 @@
-# Sets user-defined palette
 palette = "catppuccin_mocha"
 
-format = """$character"""
-right_format = """$directory$git_branch$git_status$git_state"""
+format = """
+$os\
+$directory\
+$git_branch\
+$git_status\
+$git_state\
+$cmd_duration\
+$conda\
+\n\
+$character"""
 
 add_newline = false
 
 [line_break]
 disabled = true
 
+[os]
+disabled = false
+format = "[$symbol](blue) "
+
+[os.symbols]
+Arch = "󰣇"
+Windows = ""
+
 [character]
-# Note the use of Catppuccin color 'maroon'
 success_symbol = "[󰋑 ](teal)"
 error_symbol = "[󰋔 ](red)"
 
-[username]
-#style_user = "white bold"
-style_user = "mauve bold"
-style_root = "red bold"
-#format = "[$user]($style) "
-#format = "[$user : ]($style)"
-format = "[ ]($style)"
-disabled = true
-show_always = true
-
 [directory]
 truncation_length = 1
-# Catppuccin 'lavender'
 style = "bold mauve"
-format = "[$path]($style)[$read_only]($read_only_style)"
+format = '([\[$path]($style))[$read_only\]]($style)'
+# [\[$read_only\]]($read_only_style)"
+truncate_to_repo = true
+read_only = "󰌾"
 
 [git_branch]
-format = "|[$branch]($style)"
+format = '([\[$branch\]]($style))'
 truncation_length = 6
 truncation_symbol = "…"
 style = "peach"
 
 [git_status]
-conflicted = "="
-ahead = "⇡"
-behind = "⇣"
-diverged = "⇕"
-untracked = "?"
-stashed = "≡"
-modified = "!"
-staged = "[++($count)](green)"
-renamed = "»"
-deleted = "✘"
-format = "[$all_status]($style)"
+format = '([\[$all_status$ahead_behind\]]($style))'
+style = "peach"
+conflicted = "=${count}"
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+untracked = "?${count}"
+stashed = "≡${count}"
+modified = "!${count}"
+staged = "+${count}"
+renamed = "»${count}"
+deleted = "✘${count}"
 
 [git_state]
-format = '([$state( $progress_current/$progress_total)]($style))'
+format = '\([$state( $progress_current/$progress_total)]($style)\)'
 style = "peach"
+rebase = "REBASE"
+merge = "MERGE"
+revert = "REVERT"
+cherry_pick = "CHERRY"
+bisect = "BISECT"
+am = "AM"
+am_or_rebase = "AM/REBASE"
 
-#[git_branch]
-#symbol = ""
-#style = "peach"
-#format = "|[$symbol $branch]($style)"
+[cmd_duration]
+format = '([\[$duration\]]($style))'
+style = "yellow"
+min_time = 0
+show_milliseconds = true
 
-#[git_status]
-#style = "peach"
-#format = "[($all_status$ahead_behind)]($style)"
-#ahead = '⇡${count}'
-#diverged = '⇕⇡${ahead_count}⇣${behind_count}'
-#behind = '⇣${count}'
-
+[conda]
+symbol = "[](green)"
+format = "$symbol"
 
 [palettes.catppuccin_mocha]
 rosewater = "#f5e0dc"
