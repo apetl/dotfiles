@@ -4,6 +4,8 @@ zshrc_start_time=$(date +%s%N)
 # Source antidote if not already sourced
 if [[ -z "$ANTIDOTE_LOADED" ]]; then
   source /usr/share/zsh-antidote/antidote.zsh
+  # Load plugins from static file
+  source ~/.zsh_plugins.zsh
   antidote load
   export ANTIDOTE_LOADED=1
 fi
@@ -26,9 +28,12 @@ alias l="eza --ignore-glob='NTUSER*|ntuser*' --long --git"
 alias pbc="pbcopy.exe"
 alias pbp="pbpaste.exe"
 
-eval $(thefuck --alias)
-eval $(thefuck --alias fk)
-export THEFUCK_EXCLUDED_SEARCH_PATH_PREFIXES='/mnt'
+#eval $(thefuck --alias)
+#eval $(thefuck --alias fk)
+#export THEFUCK_EXCLUDED_SEARCH_PATH_PREFIXES='/mnt'
+#eval $(thefuck --alias --enable-experimental-instant-mode)
+#eval $(thefuck --alias fk --enable-experimental-instant-mode)
+#unsetopt correct_all
 
 eval "$(atuin init zsh)"
 
@@ -100,16 +105,17 @@ export NVM_DIR="$HOME/.nvm"
 async_job nvm_worker load_nvm
 
 # Zsh history settings
+HISTSIZE=5000
 HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
-setopt APPEND_HISTORY
-setopt SHARE_HISTORY
-setopt INC_APPEND_HISTORY
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_IGNORE_SPACE
-setopt HIST_EXPIRE_DUPS_FIRST
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
 
 # Other configurations
 zstyle ':completion:*' menu select
