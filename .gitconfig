@@ -53,3 +53,7 @@
     d = diff
     ds = diff --stat
     dc = diff --cached
+ 
+    # Log
+    l = log --decorate --color
+    lg = log --graph --decorate --color
