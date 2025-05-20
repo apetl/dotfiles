@@ -2,10 +2,8 @@
 	email = git@apetl.dev
 	name = apetl
 [credential "https://github.com"]
-	helper = 
 	helper = !/usr/bin/gh auth git-credential
 [credential "https://gist.github.com"]
-	helper = 
   helper = !/usr/bin/gh auth git-credential
 [init]
   defaultBranch = master
@@ -55,5 +53,4 @@
     dc = diff --cached
  
     # Log
-    l = log --decorate --color
-    lg = log --graph --decorate --color
+    l = log --graph --oneline
