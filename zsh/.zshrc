@@ -9,6 +9,14 @@ HISTORY_IGNORE=' *'
 setopt appendhistory sharehistory hist_ignore_space hist_ignore_all_dups hist_save_no_dups hist_ignore_dups hist_find_no_dups
 zstyle ':completion:*' menu select
 
+# Initialize completion system early
+autoload -Uz compinit
+if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
+
 # Fast aliases
 alias cat='bat'
 alias py='python'
@@ -83,6 +91,11 @@ nvm() {
   nvm "$@"
 }
 
+# carapace config
+export CARAPACE_BRIDGES='zsh'
+zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
+source <(carapace _carapace)
+
 # Lazy load conda
 conda() {
   unfunction conda
@@ -150,15 +163,7 @@ if [[ -z "$WORKER_STARTED" ]]; then
   # Define a callback function for the worker
   async_job_callback() {
     local job=$1 ret_code=$2 output=$3
-    if [[ $job == "initialize_compinit" ]]; then
-      # Only rebuild completion dump once a day
-      autoload -Uz compinit
-      if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
-        compinit
-      else
-        compinit -C
-      fi
-    elif [[ $job == "load_antidote" ]]; then
+    if [[ $job == "load_antidote" ]]; then
       source /usr/share/zsh-antidote/antidote.zsh
       source ~/.zsh_plugins.zsh
       antidote load
@@ -169,8 +174,7 @@ if [[ -z "$WORKER_STARTED" ]]; then
   async_register_callback my_worker async_job_callback
   export WORKER_STARTED=1
 
-  # Asynchronously initialize compinit and load plugins
-  async_job my_worker initialize_compinit
+  # Asynchronously load plugins
   async_job my_worker load_antidote
 fi
 
@@ -191,3 +195,4 @@ zshrc_end_time=$(date +%s%N)
 elapsed_time=$((($zshrc_end_time - $zshrc_start_time)/1000000))
 echo "${elapsed_time}ms"
 unset zshrc_start_time zshrc_end_time elapsed_time
+
