@@ -7,15 +7,32 @@ HISTFILE=~/.zsh_history
 SAVEHIST=$HISTSIZE
 HISTORY_IGNORE=' *'
 setopt appendhistory sharehistory hist_ignore_space hist_ignore_all_dups hist_save_no_dups hist_ignore_dups hist_find_no_dups
+
+# Enhanced history settings
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_FCNTL_LOCK
+setopt HIST_REDUCE_BLANKS
+setopt HIST_VERIFY
+
 zstyle ':completion:*' menu select
 
-# Initialize completion system early
+# Initialize completion system early with performance optimizations
 autoload -Uz compinit
 if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
-  compinit
+  compinit -i  # Add -i flag to ignore insecure directories
 else
-  compinit -C
+  compinit -C -i
 fi
+
+# Enable completion caching
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+
+# Directory navigation shortcuts
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
 
 # Fast aliases
 alias cat='bat'
@@ -34,6 +51,7 @@ alias la="eza --ignore-glob='NTUSER*|ntuser*' -a"
 alias l="eza --ignore-glob='NTUSER*|ntuser*' --long --git"
 alias pbc="pbcopy.exe"
 alias pbp="pbpaste.exe"
+alias dg="/home/apetl/Projects/dataGhost/bin/dataGhost"
 
 # Key bindings
 bindkey '^H' backward-kill-word
@@ -49,31 +67,43 @@ my-clear() {
 zle -N my-clear
 bindkey '^L' my-clear
 
-# Load cached brew shellenv or create cache
-if [[ ! -f ~/.brew_shellenv ]] || [[ -n "$(find ~/.brew_shellenv -mtime +7 2>/dev/null)" ]]; then
-  /home/linuxbrew/.linuxbrew/bin/brew shellenv > ~/.brew_shellenv
+if [ -f "$HOME/.env" ]; then
+  set -a
+  source "$HOME/.env"
+  set +a
 fi
-source ~/.brew_shellenv
 
-# Load cached zoxide init or create cache
-if [[ ! -f ~/.zoxide_init.zsh ]] || [[ -n "$(find ~/.zoxide_init.zsh -mtime +7 2>/dev/null)" ]]; then
-  zoxide init --cmd cd zsh > ~/.zoxide_init.zsh
-fi
-source ~/.zoxide_init.zsh
+# More efficient lazy loading function
+function lazy_load() {
+  local function_name="$1"
+  local load_command="$2"
 
-# Load cached starship init or create cache
-if [[ ! -f ~/.starship_init.zsh ]] || [[ -n "$(find ~/.starship_init.zsh -mtime +7 2>/dev/null)" ]]; then
-  starship init zsh > ~/.starship_init.zsh
-fi
-source ~/.starship_init.zsh
+  eval "$function_name() {
+    unfunction $function_name
+    $load_command
+    $function_name \"\$@\"
+  }"
+}
 
-# Load cached atuin init or create cache
-if [[ ! -f ~/.atuin_init.zsh ]] || [[ -n "$(find ~/.atuin_init.zsh -mtime +7 2>/dev/null)" ]]; then
-  atuin init zsh > ~/.atuin_init.zsh
-fi
-source ~/.atuin_init.zsh
+# More robust cache checking function
+check_cache() {
+  local cache_file="$1"
+  local command="$2"
+  local max_age="${3:-7}"  # Default to 7 days
 
-# Lazy load functions
+  if [[ ! -f "$cache_file" ]] || [[ -n "$(find "$cache_file" -mtime +$max_age 2>/dev/null)" ]]; then
+    eval "$command" > "$cache_file"
+  fi
+  source "$cache_file"
+}
+
+# Use the new cache function for all cached initializations
+check_cache ~/.brew_shellenv "/home/linuxbrew/.linuxbrew/bin/brew shellenv"
+check_cache ~/.zoxide_init.zsh "zoxide init --cmd cd zsh"
+check_cache ~/.starship_init.zsh "starship init zsh"
+check_cache ~/.atuin_init.zsh "atuin init zsh"
+
+# Lazy load functions using the new lazy_load helper
 function lf() {
   local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
   yazi "$@" --cwd-file="$tmp"
@@ -83,24 +113,17 @@ function lf() {
   rm -f -- "$tmp"
 }
 
-# Lazy load NVM
-nvm() {
-  unfunction nvm
-  export NVM_DIR="$HOME/.nvm"
-  source $NVM_DIR/nvm.sh
-  nvm "$@"
-}
+# Lazy load NVM with the new helper
+lazy_load nvm 'export NVM_DIR="$HOME/.nvm"; source $NVM_DIR/nvm.sh; nvm use --lts'
 
 # carapace config
-export CARAPACE_BRIDGES='zsh'
-zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
-source <(carapace _carapace)
+#export CARAPACE_BRIDGES='zsh'
+#zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
+#source <(carapace _carapace)
 
-# Lazy load conda
-conda() {
-  unfunction conda
-  # Conda initialization
-  __conda_setup="$('/home/apetl/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+# Lazy load conda with the new helper
+lazy_load conda '
+  __conda_setup="$(/home/apetl/miniconda3/bin/conda shell.zsh hook 2> /dev/null)"
   if [ $? -eq 0 ]; then
     eval "$__conda_setup"
   else
@@ -111,8 +134,7 @@ conda() {
     fi
   fi
   unset __conda_setup
-  conda "$@"
-}
+'
 
 # Lazy load fzf
 fr() {
@@ -196,3 +218,6 @@ elapsed_time=$((($zshrc_end_time - $zshrc_start_time)/1000000))
 echo "${elapsed_time}ms"
 unset zshrc_start_time zshrc_end_time elapsed_time
 
+
+# opencode
+export PATH=/home/apetl/.opencode/bin:$PATH

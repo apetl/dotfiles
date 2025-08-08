@@ -36,6 +36,9 @@
     cam = commit --amend -m
     ca = commit --amend --no-edit
 
+    # Push
+    pom = push -u origin master
+
     # Switch
     sw = switch
     swc = switch -c

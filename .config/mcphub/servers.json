@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "env": {
+        "DEFAULT_MINIMUM_TOKENS": "6000"
+      },
+      "disabled": false,
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ]
+    }
+  },
+  "nativeMCPServers": {
+    "neovim": {
+      "disabled": true
+    },
+    "mcphub": {
+      "disabled": false
+    }
+  }
+}
