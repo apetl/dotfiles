@@ -57,3 +57,8 @@
  
     # Log
     l = log --graph --oneline
+[core]
+	fscache = true
+	preloadindex = true
+[gc]
+	auto = 256

@@ -52,6 +52,9 @@ alias l="eza --ignore-glob='NTUSER*|ntuser*' --long --git"
 alias pbc="pbcopy.exe"
 alias pbp="pbpaste.exe"
 alias dg="/home/apetl/Projects/dataGhost/bin/dataGhost"
+alias s="scratchpad.sh"
+alias obs="cd /mnt/c/Users/petli/Obsidian/RAM && nvim"
+alias jrnl="~/Projects/jrnl/jrnl"
 
 # Key bindings
 bindkey '^H' backward-kill-word
@@ -202,6 +205,7 @@ fi
 
 # Path setup (consolidated)
 export PATH="$PATH:$HOME/miniconda3/bin:$HOME/go/bin"
+export PATH="$HOME/.cargo/bin:$PATH"
 export EDITOR='nvim'
 fpath+=~/.zfunc
 

@@ -8,6 +8,7 @@
 .config/btop/btop.log
 .config/lazygit/state.yml
 .config/shell_gpt
+.config/aichat
 
 .opencommit
 .sgptrc
