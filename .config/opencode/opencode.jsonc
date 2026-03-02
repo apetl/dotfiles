@@ -1,0 +1,48 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "small_model": "mistralai/mistral-small-3.2-24b-instruct@preset/obs",
+  "mode": {
+    "chat": {
+      "prompt": "you are a knowledgeable friend. be a bit bratty, push back. don't be sycophantic",
+      "tools": {
+        "bash": false,
+        "edit": false,
+        "write": false,
+        "read": false,
+        "grep": false,
+        "glob": false,
+        "list": false,
+        "patch": false,
+        "todowrite": false,
+        "todoread": false,
+        "webfetch": true
+      }
+    }
+  },
+  "provider": {
+    "openrouter": {
+      "models": {
+        "kimi-nt": {
+          "id": "moonshotai/kimi-k2.5@preset/kimint"
+        },
+        "mistral-creative": {
+          "id": "mistralai/mistral-small-creative",
+          "options": {
+            "transforms": [
+              "middle-out"
+            ]
+          }
+        },
+        "mistral-small": {
+          "id": "mistralai/mistral-small-3.2-24b-instruct@preset/obs"
+        }
+      }
+    }
+  },
+  "mcp": {
+    "searxng": {
+      "type": "remote",
+      "url": "http://192.168.68.50:3008/mcp"
+    }
+  }
+}
